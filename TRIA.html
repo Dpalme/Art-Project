@@ -1,0 +1,69 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>TRIA</title>
+  <link rel="stylesheet" href="https://dpalme.github.io/Peoria/css/peoria-0-2-2.css">
+  <link rel="stylesheet" href="color-pallete.css">
+</head>
+
+<body class="blue-bg">
+  <div>
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="absolute-center"
+      style="width: 95%; height: 95%;">
+      <polygon points="25,75 50,25, 75,75" fill="var(--yellow)"></polygon>
+      <clipPath id="mask">
+        <polygon points="25,75 50,25, 75,75"></polygon>
+      </clipPath>
+    </svg>
+    <div class="absolute-center full column text-center margin-none green">
+      <h1 class="three columns block">T</h1>
+      <h1 class="three columns block">R</h1>
+      <h1 class="three columns block">I</h1>
+      <h1 class="three columns block">A</h1>
+    </div>
+  </div>
+
+  <script>
+    svg = document.querySelector('svg');
+    aristas = 360;
+    Puntos = [];
+    r = 50;
+    lines = [];
+    d = 360 / aristas;
+    for (n = 1; n < aristas + 1; n++) {
+      angle = (Math.PI / 180) * (d * n);
+      Puntos.push([r + r * Math.cos(angle), r + r * Math.sin(angle)]);
+    }
+
+    function createLines() {
+      for (var n = 0; n < aristas * 3; n++) {
+        newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newLine.setAttribute("stroke", "var(--red-secondary)")
+        newLine.setAttribute("clip-path", "url(#mask)")
+        newLine.setAttribute("stroke-width", ".1")
+        svg.appendChild(newLine);
+        lines.push(newLine);
+      }
+    }
+
+    function drawLines() {
+      for (line in lines) {
+        var i = Puntos[Math.floor(Math.random() * Puntos.length)];
+        var i1 = Puntos[Math.floor(Math.random() * Puntos.length)];
+        lines[line].setAttribute('x1', i[0] + "");
+        lines[line].setAttribute('y1', i[1] + "");
+        lines[line].setAttribute('x2', i1[0] + "");
+        lines[line].setAttribute('y2', i1[1] + "");
+      }
+    }
+
+    createLines();
+    drawLines();
+    setInterval(drawLines, 100);
+  </script>
+</body>
+
+</html>
