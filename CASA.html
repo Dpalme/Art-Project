@@ -5,67 +5,91 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <meta http-equiv='X-UA-Compatible' content='ie=edge'>
   <title>CASA</title>
-  <link rel='stylesheet' href='https://dpalme.github.io/Peoria/css/peoria-0-4-3.css'>
+  <link rel='stylesheet' href='https://dpalme.github.io/Peoria/css/peoria-0-4-4.css'>
   <link rel="stylesheet" href="color-pallete.css">
+
+  <script src='https://dpalmer.in/Peoria/peoria_2.js'></script>
 </head>
 
-<body class="mid-white-bg">
-  <div>
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
-      style="width: 95%; height: 95%;">
-      <circle cx="50" cy="50" r="50" stroke-width="3" fill="var(--red)"></circle>
-      <clipPath id="mask">
-        <circle cx="50" cy="50" r="50"></circle>
-      </clipPath>
-    </svg>
-    <div class="center-a container col-12 text-c black">
-      <h1 class="col-3">E</h1>
-      <h1 class="col-3">S</h1>
-      <h1 class="col-3">-</h1>
-      <h1 class="col-3">3</h1>
-    </div>
+<body class="green-bg">
+  <div class="center-a container col-12 text-c black">
+    <h1 class="col-q">C</h1>
+    <h1 class="col-q">A</h1>
+    <h1 class="col-q">S</h1>
+    <h1 class="col-q">A</h1>
   </div>
 
-  <script>
-    svg = document.querySelector('svg');
-    aristas = 60;
-    Puntos = [];
-    r = 75;
-    lines = [];
-    let i1;
-    d = 360 / aristas;
-    distance = 1.01;
-    for (n = 1; n < aristas + 1; n++) {
-      angle = (Math.PI / 180) * (d * n);
-      Puntos.push([50 + r * Math.cos(angle), 50 + r * Math.sin(angle)]);
-    }
+  <script type="module">
+    import * as THREE from './three.module.js';
 
-    function createLines() {
-      for (var n = 0; n < aristas * 3; n++) {
-        newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        newLine.setAttribute("stroke", "var(--mid-white)")
-        newLine.setAttribute("stroke-width", ".3")
-        newLine.setAttribute("clip-path", "url(#mask)")
-        svg.appendChild(newLine);
-        lines.push(newLine);
+    let camera, scene, renderer, container, torus;
+    let theta = 0;
+
+    const radius = 500;
+    const frustumSize = 50;
+
+    init();
+    animate();
+
+    function init() {
+      if (window.innerHeight < window.innerWidth){
+        container = object({type: "div", class: "overflow-h center-a back", style: "height: 75%; width: 75vh; border-radius: 50%"});
+      } else {
+        container = object({type: "div", class: "overflow-h center-a back", style: "width: 75%; height: 75vw; border-radius: 50%"});
       }
+      document.body.appendChild(container);
+
+      const aspect = window.innerWidth / window.innerHeight;
+      camera = new THREE.PerspectiveCamera(20.1, window.innerWidth / window.innerHeight, 10, 100);
+      camera.filmGauge = 80;
+      camera.position.z = 100;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xD69CAD);
+
+      const geometry = new THREE.BoxBufferGeometry(36, 36, 36)
+      torus = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0xB87B51}));
+      torus.position.x = -5;
+      torus.position.y = -5;
+      torus.position.z = -5;
+      scene.add(torus);
+      camera.lookAt(scene.position);
+      
+      renderer = new THREE.WebGLRenderer();
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+
+      window.addEventListener('resize', onWindowResize, false);
     }
 
-    function drawLines() {
-      for (line in lines) {
-        var i = Puntos[line];
-        i1 = Puntos[(line + Math.floor(aristas / 4.2)) % aristas];
-        lines[line].setAttribute('x1', i[0] + "");
-        lines[line].setAttribute('y1', i[1] + "");
-        lines[line].setAttribute('x2', i1[0] + "");
-        lines[line].setAttribute('y2', i1[1] + "");
-      }
+    function onWindowResize() {
+      const aspect = window.innerWidth / window.innerHeight;
+      camera.left = -frustumSize * aspect / 2;
+      camera.right = frustumSize * aspect / 2;
+      camera.top = frustumSize / 2;
+      camera.bottom = -frustumSize / 2;
+
+      camera.updateProjectionMatrix();
+      renderer.setSize( window.innerWidth, window.innerHeight );
     }
 
-    createLines();
-    drawLines();
-    //setInterval(drawLines, 100);
-  </script>
+    function animate() {
+      requestAnimationFrame(animate);
+      render();
+    }
+
+    function render() {
+      theta += 0.04;
+      var angle = THREE.MathUtils.degToRad(theta);
+      torus.rotation.x = 10 * Math.sin(angle);
+      torus.rotation.y = -20 * Math.sin(angle);
+      torus.rotation.z = -10 * Math.cos(angle);
+      camera.updateMatrixWorld();
+
+      renderer.render(scene, camera);
+    }
+</script>
 </body>
 
 </html>

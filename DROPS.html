@@ -25,7 +25,7 @@
       <h1 class="mob-show">DROPS</h1>
     </div>
   </div>
-  
+
   <script type="module">
     import * as THREE from './three.module.js';
 
@@ -57,10 +57,16 @@
       scene.add(light);
 
       const geometry = new THREE.CylinderBufferGeometry(.2, .4, 2);
-      var colors = [0x1F5AFE, 0x4558D9, 0x6A57B3, 0x8F558F, 0xB45367, 0xDA5242, 0xFF501B];
+      var materials = [new THREE.MeshBasicMaterial({color: 0x1F5AFE}),
+                    new THREE.MeshBasicMaterial({color: 0x4558D9}),
+                    new THREE.MeshBasicMaterial({color: 0x6A57B3}),
+                    new THREE.MeshBasicMaterial({color: 0x8F558F}),
+                    new THREE.MeshBasicMaterial({color: 0xB45367}),
+                    new THREE.MeshBasicMaterial({color: 0xDA5242}),
+                    new THREE.MeshBasicMaterial({color: 0xFF501B})];
 
       for ( let i = 0; i < 2000; i ++ ) {
-        const object = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: colors[Math.random() * colors.length << 0]}));
+        const object = new THREE.Mesh(geometry, materials[Math.random() * materials.length << 0]);
 
         object.position.x = Math.random() * 800 - 400;
 				object.position.y = Math.random() * 800 - 400;
