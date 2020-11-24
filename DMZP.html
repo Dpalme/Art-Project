@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DMZP</title>
+
+    <link rel='stylesheet' href='https://dpalmer.in/Peoria/css/peoria-0-4-4.css'>
+    <script src='https://dpalmer.in/Peoria/peoria_2.js'></script>
+    <style>
+        canvas {
+            position: fixed;
+        }
+    </style>
+</head>
+
+<body class="night">
+    <div class="fullscreen fixed front">
+        <div class="center-a w-f front text-c pink">
+            <h1 class="col-h" style="line-height: 50vh;">D</h1>
+            <h1 class="col-h" style="line-height: 50vh;">M</h1>
+            <h1 class="col-h" style="line-height: 50vh;">Z</h1>
+            <h1 class="col-h" style="line-height: 50vh;">P</h1>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from './three.module.js';
+        
+        const renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
+        camera.position.set( 0, 0, 100 );
+        camera.lookAt( 0, 0, 0 );
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x151F45);
+        var theta = 0;
+
+        //create a blue LineBasicMaterial
+        const material = new THREE.LineBasicMaterial({color: 0xDC8E9A});
+
+        var points = [];
+        const r = 100;
+        points.push(new THREE.Vector3(r, r, r));
+        points.push(new THREE.Vector3(-r, -r, -r));
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+        for (var i = 0; i < 100 + 1; i++) {
+            const line = new THREE.Line(geometry, material);
+
+            line.rotation.x = Math.random() * 2 * Math.PI;
+            line.rotation.y = Math.random() * 2 * Math.PI;
+            line.rotation.z = Math.random() * 2 * Math.PI;
+            scene.add(line);
+        }
+        console.log(scene)
+        animate();
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+        }
+
+        function render() {
+            theta += 0.1;
+            var angle = THREE.MathUtils.degToRad(theta);
+            camera.position.x = 20 * Math.sin(angle);
+            camera.position.y = 20 * Math.sin(angle);
+            camera.position.z = 20 * Math.cos(angle);
+            camera.lookAt(0, 0, 0);
+            camera.updateMatrixWorld();
+
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+
+</html>
