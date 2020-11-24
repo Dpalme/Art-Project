@@ -14,6 +14,7 @@
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
       style="width: 95%; height: 95%;">
       <circle cx="50" cy="50" r="50" stroke-width="3" fill="var(--yellow)"></circle>
+      <g id="svg-group" style="transform-origin: center; transform-box: fill-box"></g>
     </svg>
     <div class="center-a container col-12 text-c red">
       <h1 class="col-q">M</h1>
@@ -25,6 +26,7 @@
 
   <script>
     svg = document.querySelector('svg');
+    svgg = document.getElementById('svg-group');
     aristas = 180;
     Puntos = [];
     r = 50;
@@ -41,7 +43,7 @@
         newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         newLine.setAttribute("stroke", "var(--orange)")
         newLine.setAttribute("stroke-width", ".02")
-        svg.appendChild(newLine);
+        svgg.appendChild(newLine);
         lines.push(newLine);
       }
     }
@@ -62,10 +64,17 @@
       }
     }
 
+
+
     createLines();
     drawLines();
-    
-    setInterval(drawLines, 100);
+    animate();
+    var theta = 0;
+    function animate() {
+        requestAnimationFrame(animate);
+        theta -= 40;
+        svgg.setAttribute('transform', 'rotate(' + theta%360 + ')');
+    }
   </script>
 </body>
 
