@@ -7,63 +7,85 @@
   <title>TRIA</title>
   <link rel="stylesheet" href="https://dpalme.github.io/Peoria/css/peoria-0-4-3.css">
   <link rel="stylesheet" href="color-pallete.css">
+
+  <script src='https://dpalmer.in/Peoria/peoria_2.js'></script>
 </head>
 
 <body class="blue-bg">
-  <div>
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
-      style="width: 95%; height: 95%;">
-      <polygon points="25,75 50,25, 75,75" fill="var(--red)"></polygon>
-      <clipPath id="mask">
-        <polygon points="25,75 50,25, 75,75"></polygon>
-      </clipPath>
-    </svg>
-    <div class="center-a col-12 text-c white">
-      <h1 class="col-3">T</h1>
-      <h1 class="col-3">R</h1>
-      <h1 class="col-3">I</h1>
-      <h1 class="col-3">A</h1>
-    </div>
+  <div class="center-a col-12 text-c white">
+    <h1 class="col-3">T</h1>
+    <h1 class="col-3">R</h1>
+    <h1 class="col-3">I</h1>
+    <h1 class="col-3">A</h1>
   </div>
 
-  <script>
-    svg = document.querySelector('svg');
-    aristas = 90;
-    Puntos = [];
-    r = 50;
-    lines = [];
-    d = 360 / aristas;
-    for (n = 1; n < aristas + 1; n++) {
-      angle = (Math.PI / 180) * (d * n);
-      Puntos.push([r + r * Math.cos(angle), r + r * Math.sin(angle)]);
+  <script type="module">
+    import * as THREE from './three.module.js';
+
+    let camera, scene, renderer, container, torus;
+    let theta = 0;
+
+    const radius = 500;
+    const frustumSize = 50;
+
+    init();
+    animate();
+
+    function init() {
+      container = object({type: "div", class: "absolute top left fullscreen back"});
+      document.body.appendChild(container);
+
+      const aspect = window.innerWidth / window.innerHeight;
+      camera = new THREE.OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, 80, 100);
+      camera.position.z = 100;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xFB1C6C);
+
+      const light = new THREE.DirectionalLight(0xFFFFFF, .2);
+      light.position.set(1, 1, 1).normalize();
+      scene.add(light);
+
+      const geometry = new THREE.TorusKnotBufferGeometry(10, 2, 300, 32)
+      torus = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0xDADADA}));
+      scene.add(torus);
+      
+      renderer = new THREE.WebGLRenderer();
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+
+      window.addEventListener('resize', onWindowResize, false);
     }
 
-    function createLines() {
-      for (var n = 0; n < aristas * 3; n++) {
-        newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        newLine.setAttribute("stroke", "var(--yellow)")
-        newLine.setAttribute("clip-path", "url(#mask)")
-        newLine.setAttribute("stroke-width", ".1")
-        svg.appendChild(newLine);
-        lines.push(newLine);
-      }
+    function onWindowResize() {
+      const aspect = window.innerWidth / window.innerHeight;
+      camera.left = -frustumSize * aspect / 2;
+      camera.right = frustumSize * aspect / 2;
+      camera.top = frustumSize / 2;
+      camera.bottom = -frustumSize / 2;
+
+      camera.updateProjectionMatrix();
+      renderer.setSize( window.innerWidth, window.innerHeight );
     }
 
-    function drawLines() {
-      for (line in lines) {
-        var i = Puntos[Math.floor(Math.random() * Puntos.length)];
-        var i1 = Puntos[Math.floor(Math.random() * Puntos.length)];
-        lines[line].setAttribute('x1', i[0] + "");
-        lines[line].setAttribute('y1', i[1] + "");
-        lines[line].setAttribute('x2', i1[0] + "");
-        lines[line].setAttribute('y2', i1[1] + "");
-      }
+    function animate() {
+      requestAnimationFrame(animate);
+      render();
     }
 
-    createLines();
-    drawLines();
-    setInterval(drawLines, 100);
-  </script>
+    function render() {
+      theta += 0.04;
+      var angle = THREE.MathUtils.degToRad(theta);
+      torus.rotation.x = 10 * Math.sin(angle);
+      torus.rotation.y = -20 * Math.sin(angle);
+      torus.rotation.z = -10 * Math.cos(angle);
+      camera.lookAt(scene.position);
+      camera.updateMatrixWorld();
+
+      renderer.render(scene, camera);
+    }
+</script>
 </body>
 
 </html>

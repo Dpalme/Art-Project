@@ -39,7 +39,7 @@
       for (var n = 0; n < aristas * 3; n++) {
         newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         newLine.setAttribute("stroke", "var(--green)")
-        newLine.setAttribute("stroke-width", ".03")
+        newLine.setAttribute("stroke-width", ".05")
         newLine.setAttribute("mask", "url(#mask)")
         svg.appendChild(newLine);
         lines.push(newLine);
@@ -59,7 +59,7 @@
 
     createLines();
     drawLines();
-    setInterval(drawLines, 100);
+    setInterval(drawLines, 110);
   </script>
 </body>
 
