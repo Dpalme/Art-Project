@@ -8,18 +8,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>DROPS</title>
 
-  <link rel='stylesheet' href='https://dpalmer.in/Peoria/css/peoria-0-4-3.css'>
+  <link rel='stylesheet' href='https://dpalmer.in/Peoria/css/peoria-0-4-4.css'>
   <script src='https://dpalmer.in/Peoria/peoria_2.js'></script>
 </head>
 
 <body>
   <div class="fullscreen d-fixed front">
-    <div class="center-a container col-12 front text-c black">
-      <h1 class="col-2 col-1-o">D</h1>
-      <h1 class="col-2">R</h1>
-      <h1 class="col-2">O</h1>
-      <h1 class="col-2">P</h1>
-      <h1 class="col-2">S</h1>
+    <div class="center-a container col-12 front text-c black" style="opacity: .6;">
+      <div class="mob-hide">
+        <h1 class="col-2 col-1-o">D</h1>
+        <h1 class="col-2">R</h1>
+        <h1 class="col-2">O</h1>
+        <h1 class="col-2">P</h1>
+        <h1 class="col-2">S</h1>
+      </div>
+      <h1 class="mob-show">DROPS</h1>
     </div>
   </div>
   
@@ -36,7 +39,11 @@
     animate();
 
     function init() {
-      container = object({type: "div", class: "absolute top left fullscreen back"});
+      if (window.innerHeight < window.innerWidth){
+        container = object({type: "div", class: "overflow-h h-f center-a back", style: "width: 100vh; border-radius: 50%"});
+      } else {
+        container = object({type: "div", class: "overflow-h w-f center-a back", style: "height: 100vw; border-radius: 50%"});
+      }
       document.body.appendChild(container);
 
       const aspect = window.innerWidth / window.innerHeight;
