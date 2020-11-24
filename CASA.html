@@ -5,24 +5,24 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <meta http-equiv='X-UA-Compatible' content='ie=edge'>
   <title>CASA</title>
-  <link rel='stylesheet' href='https://dpalme.github.io/Peoria/css/peoria-0-2-2.css'>
+  <link rel='stylesheet' href='https://dpalme.github.io/Peoria/css/peoria-0-4-3.css'>
   <link rel="stylesheet" href="color-pallete.css">
 </head>
 
 <body class="mid-white-bg">
   <div>
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="absolute-center"
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
       style="width: 95%; height: 95%;">
       <circle cx="50" cy="50" r="50" stroke-width="3" fill="var(--red)"></circle>
       <clipPath id="mask">
         <circle cx="50" cy="50" r="50"></circle>
       </clipPath>
     </svg>
-    <div class="absolute-center container full column text-center margin-none yellow">
-      <h1 class="three columns block">E</h1>
-      <h1 class="three columns block">S</h1>
-      <h1 class="three columns block">-</h1>
-      <h1 class="three columns block">3</h1>
+    <div class="center-a container col-12 text-c black">
+      <h1 class="col-3">E</h1>
+      <h1 class="col-3">S</h1>
+      <h1 class="col-3">-</h1>
+      <h1 class="col-3">3</h1>
     </div>
   </div>
 
@@ -43,7 +43,7 @@
     function createLines() {
       for (var n = 0; n < aristas * 3; n++) {
         newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        newLine.setAttribute("stroke", "var(--red-secondary)")
+        newLine.setAttribute("stroke", "var(--mid-white)")
         newLine.setAttribute("stroke-width", ".3")
         newLine.setAttribute("clip-path", "url(#mask)")
         svg.appendChild(newLine);
