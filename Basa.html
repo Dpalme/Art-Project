@@ -14,6 +14,7 @@
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
       style="width: 95%; height: 95%;">
       <circle cx="50" cy="50" r="50" fill="var(--black)"></circle>
+      <g id="svg-group" style="transform-origin: center; transform-box: fill-box"></g>
     </svg>
     <div class="center-a col-12 text-c white">
       <h1 class="col-q">B</h1>
@@ -25,6 +26,7 @@
 
   <script>
     svg = document.querySelector('svg');
+    svgg = document.getElementById('svg-group');
     aristas = 360;
     Puntos = [];
     r = 50;
@@ -36,12 +38,12 @@
     }
 
     function createLines() {
-      for (var n = 0; n < aristas * 3; n++) {
+      for (var n = 0; n < aristas * 2; n++) {
         newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         newLine.setAttribute("stroke", "var(--green)")
         newLine.setAttribute("stroke-width", ".05")
         newLine.setAttribute("mask", "url(#mask)")
-        svg.appendChild(newLine);
+        svgg.appendChild(newLine);
         lines.push(newLine);
       }
     }
@@ -56,10 +58,18 @@
         lines[line].setAttribute('y2', i1[1] + "");
       }
     }
+    
+    var theta = 0;
 
     createLines();
     drawLines();
-    setInterval(drawLines, 110);
+    animate();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        theta += 0.1;
+        svgg.setAttribute('transform', 'rotate(' + theta + ')');
+    }
   </script>
 </body>
 
