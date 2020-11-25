@@ -80,7 +80,7 @@
     }
 
     function render() {
-      theta += 0.04;
+      theta += 0.01;
       var angle = THREE.MathUtils.degToRad(theta);
       torus.rotation.x = 10 * Math.sin(angle);
       torus.rotation.y = -20 * Math.sin(angle);

@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>DMZP</title>
+    <title>ARTE</title>
 
     <link rel='stylesheet' href='https://dpalmer.in/Peoria/css/peoria-0-4-4.css'>
     <script src='https://dpalmer.in/Peoria/peoria_2.js'></script>
@@ -16,13 +16,13 @@
     </style>
 </head>
 
-<body class="night">
+<body>
     <div class="fullscreen fixed front">
-        <div class="center-a w-f front text-c black" style="opacity: 1;">
-            <h1 class="title-1 col-h" style="line-height: 50vh;">D</h1>
-            <h1 class="title-1 col-h" style="line-height: 50vh;">M</h1>
-            <h1 class="title-1 col-h" style="line-height: 50vh;">Z</h1>
-            <h1 class="title-1 col-h" style="line-height: 50vh;">P</h1>
+        <div class="center-a w-f front text-c red" style="opacity: 1;">
+            <h1 class="title-1 col-h" style="line-height: 50vh;">A</h1>
+            <h1 class="title-1 col-h" style="line-height: 50vh;">R</h1>
+            <h1 class="title-1 col-h" style="line-height: 50vh;">T</h1>
+            <h1 class="title-1 col-h" style="line-height: 50vh;">E</h1>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
         camera.lookAt( 0, 0, 0 );
 
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x151F45);
+        scene.background = new THREE.Color(0xEFE6DF);
         var theta = 0;
 
         // Sphere points
@@ -62,11 +62,14 @@
             }
         }
 
-        const material = new THREE.LineBasicMaterial({color: 0xDC8E9A});
+        const materials = [new THREE.LineBasicMaterial({color: 0xFFAA1B}),
+                           new THREE.LineBasicMaterial({color: 0xF4254F}),
+                           new THREE.LineBasicMaterial({color: 0x5056EC}),
+                           new THREE.LineBasicMaterial({color: 0x40427F})];
         for (var i = 0; i < numberOfLines + 1; i++) {
             const point1 = points[Math.random() * points.length << 0];
             const point2 = points[Math.random() * points.length << 0];
-            scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([point1, point2]), material));
+            scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([point1, point2]), materials[Math.random() * materials.length << 0]));
         }
 
         window.addEventListener('resize', onWindowResize, false);
@@ -93,7 +96,6 @@
             theta += 0.1;
             var angle = THREE.MathUtils.degToRad(theta);
             camera.position.x = 100 * Math.sin(angle);
-            // camera.position.y = 10 * Math.sin(angle);
             camera.position.z = 100 * Math.cos(angle);
             camera.lookAt(0, 0, 0);
             camera.updateMatrixWorld();
