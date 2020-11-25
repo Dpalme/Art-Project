@@ -22,10 +22,9 @@
   <script type="module">
     import * as THREE from './three.module.js';
 
-    let camera, scene, renderer, container, torus;
+    let camera, scene, renderer, container, cube;
     let theta = 0;
 
-    const radius = 500;
     const frustumSize = 50;
 
     init();
@@ -40,20 +39,20 @@
       document.body.appendChild(container);
 
       const aspect = window.innerWidth / window.innerHeight;
-      camera = new THREE.PerspectiveCamera(20.1, window.innerWidth / window.innerHeight, 10, 100);
+      camera = new THREE.PerspectiveCamera(20.1, window.innerWidth / window.innerHeight, .1, 200);
       camera.filmGauge = 80;
       camera.position.z = 100;
 
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0xD69CAD);
 
-      const geometry = new THREE.BoxBufferGeometry(36, 36, 36)
-      torus = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0xB87B51}));
-      torus.position.x = -5;
-      torus.position.y = -5;
-      torus.position.z = -5;
-      scene.add(torus);
-      camera.lookAt(0, 0, 0);
+      const geometry = new THREE.BoxBufferGeometry(12, 12, 12)
+      cube = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0xB87B51}));
+      cube.position.set(0, 0, 0);
+      scene.add(cube);
+
+      scene.position.set(-22.5, 5, 0);
+      camera.lookAt(cube.position);
       
       renderer = new THREE.WebGLRenderer();
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -82,10 +81,7 @@
     function render() {
       theta += 0.01;
       var angle = THREE.MathUtils.degToRad(theta);
-      torus.rotation.x = 10 * Math.sin(angle);
-      torus.rotation.y = -20 * Math.sin(angle);
-      torus.rotation.z = -10 * Math.cos(angle);
-      camera.updateMatrixWorld();
+      cube.rotation.set(10 * Math.sin(angle), -20 * Math.sin(angle), -10 * Math.cos(angle));
 
       renderer.render(scene, camera);
     }
