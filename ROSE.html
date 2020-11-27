@@ -1,0 +1,82 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ROSE</title>
+  <link rel="stylesheet" href="https://dpalme.github.io/Peoria/css/peoria-0-4-4.css">
+  <link rel="stylesheet" href="color-pallete.css">
+</head>
+
+<body class="mid-white-bg">
+  <div>
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
+      style="width: 95%; height: 95%;">
+      <circle cx="50" cy="50" r="50" stroke-width="3" fill="var(--pink)"></circle>
+      <g id="svg-group" style="transform-origin: center; transform-box: fill-box"></g>
+    </svg>
+    <div class="absolute container col-12 mt-1">
+      <label for="range" class="h2"></label>
+      <input type="range" min="1" max="14" value="3" step="1" id="range" class="d-block h-1" onchange="change()">
+    </div>
+    <div class="center-a container col-12 text-c green">
+      <h1 class="col-q">R</h1>
+      <h1 class="col-q">O</h1>
+      <h1 class="col-q">S</h1>
+      <h1 class="col-q">E</h1>
+    </div>
+  </div>
+
+  <script>
+    svgg = document.getElementById('svg-group');
+    let points = createPoints(180, 50);
+    let lines = [];
+
+    function createPoints(points, r){
+      const d = 360 / points;
+      let pointArray = [];
+      for (n = 0; n <= points; n++) {
+        const angle = (Math.PI / 180) * (d * n);
+        pointArray.push([50 + r * Math.cos(angle),50 + r * Math.sin(angle)]);
+      }
+      return pointArray;
+    }
+    
+
+    function createLines() {
+      for (var n = 0; n < points.length * 10; n++) {
+        newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newLine.setAttribute("stroke", "var(--red)")
+        newLine.setAttribute("stroke-width", ".03")
+        svgg.appendChild(newLine);
+        lines.push(newLine);
+      }
+    }
+
+    function drawLines(petals) {
+      for (line in lines) {
+        const point = Math.random() * points.length << 0;
+        const point1 = points[point];
+        const point2 = points[point * (petals + 1) % points.length];
+        lines[line].setAttribute('x1', point1[0]);
+        lines[line].setAttribute('y1', point1[1] + "");
+        lines[line].setAttribute('x2', point2[0] + "");
+        lines[line].setAttribute('y2', point2[1] + "");
+      }
+    }
+
+
+
+    createLines();
+    drawLines(parseInt(document.querySelector("input").value));
+    document.querySelector("label").innerText = document.querySelector("input").value;
+
+    function change() {
+        drawLines(parseInt(document.querySelector("input").value));
+        document.querySelector("label").innerText = document.querySelector("input").value;
+    }
+  </script>
+</body>
+
+</html>
