@@ -6,9 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>BASA</title>
   <link rel="stylesheet" href="https://dpalme.github.io/Peoria/css/peoria-0-4-4.css">
-  <link rel="stylesheet" href="color-pallete.css">
-
-  <script src='https://dpalmer.in/Peoria/peoria_2.js'></script>
 </head>
 
 <body class="green-bg">
@@ -16,23 +13,23 @@
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
       style="width: 95%; height: 95%;">
       <circle cx="50" cy="50" r="50" fill="var(--black)"></circle>
-      <g id="svg-group" style="transform-origin: center; transform-box: fill-box"></g>
+      <g id="svg-group"></g>
     </svg>
-    <div class="center-a col-12 text-c white">
-      <h1 class="col-q">B</h1>
-      <h1 class="col-q">A</h1>
-      <h1 class="col-q">S</h1>
-      <h1 class="col-q">A</h1>
+    <div class="center-a container mid-white">
+      <h1 class="col-h text-r title-1">B</h1>
+      <h1 class="col-h title-1">A</h1>
+      <h1 class="col-h text-r title-1">S</h1>
+      <h1 class="col-h title-1">A</h1>
     </div>
   </div>
 
   <script>
-    svg = document.querySelector('svg');
     svgg = document.getElementById('svg-group');
-    aristas = 360;
+    aristas = 180;
     Puntos = [];
     r = 50;
     lines = [];
+
     d = 360 / aristas;
     for (n = 1; n < aristas + 1; n++) {
       angle = (Math.PI / 180) * (d*n);
@@ -43,8 +40,8 @@
       for (var n = 0; n < aristas * 2; n++) {
         newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         newLine.setAttribute("stroke", "var(--green)")
-        newLine.setAttribute("stroke-width", ".05")
-        newLine.setAttribute("mask", "url(#mask)")
+        newLine.setAttribute("stroke-width", ".3")
+        newLine.setAttribute("opacity", Math.random())
         svgg.appendChild(newLine);
         lines.push(newLine);
       }
@@ -60,18 +57,10 @@
         lines[line].setAttribute('y2', i1[1] + "");
       }
     }
-    
-    var theta = 0;
 
     createLines();
     drawLines();
-    animate();
-
-    function animate() {
-        requestAnimationFrame(animate);
-        theta += 0.1;
-        svgg.setAttribute('transform', 'rotate(' + theta + ')');
-    }
+    setInterval(drawLines, 1000);
   </script>
 </body>
 
