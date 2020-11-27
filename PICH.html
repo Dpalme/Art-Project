@@ -1,0 +1,76 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PICH</title>
+  <link rel="stylesheet" href="https://dpalme.github.io/Peoria/css/peoria-0-4-4.css">
+  <link rel="stylesheet" href="color-pallete.css">
+</head>
+
+<body class="mid-white-bg">
+  <div>
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
+      style="width: 95%; height: 95%;">
+      <circle cx="50" cy="50" r="50" stroke-width="3" fill="var(--yellow)"></circle>
+      <g id="svg-group" style="transform-origin: center; transform-box: fill-box"></g>
+    </svg>
+    <div class="center-a w-f text-c red d-none">
+      <h1 class="col-q title-4">M</h1>
+      <h1 class="col-q title-4">A</h1>
+      <h1 class="col-q title-4">U</h1>
+      <h1 class="col-q title-4">S</h1>
+    </div>
+  </div>
+
+  <script>
+    let svgg = document.getElementById('svg-group');
+    let lines = [];
+    let points1 = createPoints(360, 50);
+    let points2 = createPoints(180, 10);
+
+    function createPoints(number, radius) {
+      let points = [];
+      const d = 360 / number;
+      for (n = 1; n <= number; n++) {
+        angle = (Math.PI / 180) * (d * n);
+        points.push([50 + radius * Math.cos(angle), 50 + radius * Math.sin(angle)]);
+      }
+      return points;
+    }
+
+    function createLines() {
+      for (var n = 0; n <= points1.length * 3; n++) {
+        newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newLine.setAttribute("stroke", "var(--red)")
+        newLine.setAttribute("stroke-width", ".04")
+        svgg.appendChild(newLine);
+        lines.push(newLine);
+      }
+    }
+
+    function drawLines() {
+      for (line in lines) {
+        var i = points1[Math.random() * points1.length << 0];
+        const i1 = points2[Math.random() * points2.length << 0];
+        lines[line].setAttribute('x1', i[0] + "");
+        lines[line].setAttribute('y1', i[1] + "");
+        lines[line].setAttribute('x2', i1[0] + "");
+        lines[line].setAttribute('y2', i1[1] + "");
+      }
+    }
+
+    createPoints();
+    createLines();
+    drawLines();
+    animate();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        drawLines()
+    }
+  </script>
+</body>
+
+</html>
