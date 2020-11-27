@@ -15,11 +15,11 @@
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a">
     </svg>
 
-    <div class="center-a container col-12 text-c">
-        <h1 class="col-q">L</h1>
-        <h1 class="col-q">O</h1>
-        <h1 class="col-q">O</h1>
-        <h1 class="col-q">P</h1>
+    <div class="center-a container col-12">
+        <h1 class="col-h text-r">1</h1>
+        <h1 class="col-h">9</h1>
+        <h1 class="col-h text-r">7</h1>
+        <h1 class="col-h">5</h1>
     </div>
 
     <script>
@@ -27,9 +27,10 @@
         main.setAttribute("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight);
         const x_circles = 20;
         const y_circles = 20;
-        const radius = 5;
         const x_spacing = window.innerWidth / x_circles;
         const y_spacing = window.innerHeight / y_circles;
+
+        const radius = x_spacing/4;
         let theta = 0;
         let circles = [];
 
@@ -50,9 +51,10 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            theta += 0.4;
+            theta += 0.5;
+            scale = Math.cos(theta) + 1;
             circles.forEach(circle => {
-                circle.setAttribute('transform', 'scale(' + (Math.cos(theta) + 1) + ')');
+                circle.setAttribute('transform', 'scale(' + scale + ')');
             })
         }
     </script>
