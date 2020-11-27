@@ -32,6 +32,8 @@
         let theta = 0;
         let circles = [];
 
+        window.addEventListener('resize', onWindowResize, false);
+
         for(var x = 0; x <= x_circles; x++){
             for(var y = 0; y <= y_circles; y++){
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -49,11 +51,15 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            theta += 0.5;
+            theta += 1;
             scale = Math.cos(theta) + 1;
             circles.forEach(circle => {
                 circle.setAttribute('transform', 'scale(' + scale + ')');
             })
+        }
+
+        function onWindowResize() {
+            main.setAttribute("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight);
         }
     </script>
 </body>
