@@ -10,7 +10,59 @@
 
 <body>
     <div id="output" class="fullscreen overflow-h back"></div>
-    <script type="module" src="globe.js" defer></script>
+    <script type="module">
+        import * as THREE from './three.module.js';
+
+        const output = document.getElementById('output');
+
+        // Setup scene
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x202945);
+        scene.add(new THREE.AmbientLight(0xEAEAEA));
+
+        // Setup camera
+        let camera = new THREE.PerspectiveCamera(15, output.clientWidth / output.clientHeight);
+        camera.position.set(0, 50, 500);
+        camera.lookAt(0, 0, 0);
+        camera.updateProjectionMatrix();
+        const pivot = new THREE.Group();
+        pivot.add(camera);
+        scene.add(pivot);
+        window.addEventListener('resize', onResize, false);
+
+        // Setup renderer
+        const renderer = new THREE.WebGLRenderer({
+        antialias: true
+        });
+        renderer.setSize(output.clientWidth, output.clientHeight);
+        output.appendChild(renderer.domElement);
+
+        // Setup Globe
+        const geometry = new THREE.SphereBufferGeometry(50, 50, 50);
+        const loader = new THREE.TextureLoader()
+        loader.load('./Map@4x.png', function (texture) {
+        const material = new THREE.MeshBasicMaterial({
+            map: texture
+        })
+        scene.add(new THREE.Mesh(geometry, material))
+        animate()
+        })
+
+
+        function onResize() {
+        camera.aspect = output.clientWidth / output.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(output.clientWidth, output.clientHeight);
+        }
+
+        // Kick-off renderer
+        function animate() {
+        // Frame cycle
+        pivot.rotation.y += 0.005;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+        };
+    </script>
 </body>
 
 </html>

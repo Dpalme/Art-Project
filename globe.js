@@ -20,7 +20,7 @@ camera.updateProjectionMatrix();
 const pivot = new THREE.Group();
 pivot.add(camera);
 scene.add(pivot);
-output.addEventListener('resize', onResize, false);
+window.addEventListener('resize', onResize, false);
 
 // Setup renderer
 const renderer = new THREE.WebGLRenderer({

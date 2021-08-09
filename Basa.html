@@ -9,59 +9,92 @@
 </head>
 
 <body class="green-bg">
-  <div>
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="center-a"
-      style="width: 95%; height: 95%;">
-      <circle cx="50" cy="50" r="50" fill="var(--black)"></circle>
-      <g id="svg-group"></g>
-    </svg>
-    <div class="center-a container mid-white">
-      <h1 class="col-h text-r title-1">B</h1>
-      <h1 class="col-h title-1">A</h1>
-      <h1 class="col-h text-r title-1">S</h1>
-      <h1 class="col-h title-1">A</h1>
+  <div class="fullscreen fixed front">
+    <div class="center-a w-f front text-c" style="opacity: 1;color:#E7E5D7">
+        <h1 class="title-1 col-h" style="line-height: 50vh;">B</h1>
+        <h1 class="title-1 col-h" style="line-height: 50vh;">A</h1>
+        <h1 class="title-1 col-h" style="line-height: 50vh;">S</h1>
+        <h1 class="title-1 col-h" style="line-height: 50vh;">A</h1>
     </div>
-  </div>
+</div>
 
-  <script>
-    svgg = document.getElementById('svg-group');
-    aristas = 180;
-    Puntos = [];
-    r = 50;
-    lines = [];
+<script type="module">
+    import * as THREE from './three.module.js';
+    
+    const renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-    d = 360 / aristas;
-    for (n = 1; n < aristas + 1; n++) {
-      angle = (Math.PI / 180) * (d*n);
-      Puntos.push([r + r * Math.cos(angle),r + r * Math.sin(angle)]);
+    const frustumSize = 1000;
+    const aspect = window.innerWidth / window.innerHeight;
+    const camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0, 2000);
+    camera.position.set(0, 0, 0);
+    camera.lookAt( 0, 0, 0 );
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x2EC00F);
+    var theta = 0;
+
+    // Sphere points
+    var points = [];
+    const radius = 1000;
+    const segments = 64;
+    const radians = 2 * Math.PI;
+    const numberOfLines = 1000;
+
+    for (let iy = 0; iy <= segments; iy ++) {
+        const v = iy / segments;
+        for (let ix = 0; ix <= segments; ix ++) {
+            const u = ix / segments;
+
+            const x = -radius * Math.cos(u * radians) * Math.sin(v * radians);
+            const y = radius * Math.cos(v * radians);
+            const z = radius * Math.sin(u * radians) * Math.sin(v * radians);
+            points.push(new THREE.Vector3(x, y, z));
+        }
     }
 
-    function createLines() {
-      for (var n = 0; n < aristas * 2; n++) {
-        newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        newLine.setAttribute("stroke", "var(--green)")
-        newLine.setAttribute("stroke-width", ".3")
-        newLine.setAttribute("opacity", Math.random())
-        svgg.appendChild(newLine);
-        lines.push(newLine);
-      }
+    const materials = [new THREE.LineBasicMaterial({linewidth: 20, color: 0x0B0C0A}),
+                       new THREE.LineBasicMaterial({linewidth: 15, color: 0x91968E}),
+                       new THREE.LineBasicMaterial({linewidth: 10, color: 0xE7E5D7}),
+                       new THREE.LineBasicMaterial({linewidth: 5, color: 0x2EC00F})];
+    for (var i = 0; i < numberOfLines + 1; i++) {
+        const point1 = points[Math.random() * points.length << 0];
+        const point2 = points[Math.random() * points.length << 0];
+        scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([point1, point2]), materials[Math.random() * materials.length << 0]));
     }
 
-    function drawLines() {
-      for (line in lines) {
-        var i = Puntos[Math.floor(Math.random() * Puntos.length)];
-        var i1 = Puntos[Math.floor(Math.random() * Puntos.length)];
-        lines[line].setAttribute('x1', i[0] + "");
-        lines[line].setAttribute('y1', i[1] + "");
-        lines[line].setAttribute('x2', i1[0] + "");
-        lines[line].setAttribute('y2', i1[1] + "");
-      }
+    window.addEventListener('resize', onWindowResize, false);
+
+    animate();
+
+    function onWindowResize() {
+        const aspect = window.innerWidth / window.innerHeight;
+        camera.left = -frustumSize * aspect / 2;
+        camera.right = frustumSize * aspect / 2;
+        camera.top = frustumSize / 2;
+        camera.bottom = -frustumSize / 2;
+
+        camera.updateProjectionMatrix();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+    }
+    
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
     }
 
-    createLines();
-    drawLines();
-    setInterval(drawLines, 1000);
-  </script>
+    function render() {
+        theta += 0.1;
+        var angle = THREE.MathUtils.degToRad(theta);
+        camera.position.x = 100 * Math.sin(angle);
+        camera.position.z = 100 * Math.cos(angle);
+        camera.lookAt(0, 0, 0);
+        camera.updateMatrixWorld();
+
+        renderer.render(scene, camera);
+    }
+</script>
 </body>
 
 </html>
